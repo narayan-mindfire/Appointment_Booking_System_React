@@ -1,10 +1,12 @@
 import "./App.css";
 import Card from "./components/Card";
 import Form from "./components/Form";
+import Toast from "./components/Toast";
 
 function App() {
   return (
     <>
+      <Toast message="welcome" visible={true} />
       <Form />
       <Card
         id={1235352}
