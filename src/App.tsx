@@ -1,11 +1,24 @@
+import { useState } from "react";
 import "./App.css";
 import Card from "./components/Card";
 import Form from "./components/Form";
+import Modal from "./components/Modal";
 import Toast from "./components/Toast";
 
 function App() {
+  const [showModal, setShowModal] = useState(true);
+
   return (
     <>
+      {showModal && (
+        <Modal
+          message="this is a demo modal"
+          onConfirm={() => {
+            setShowModal(false);
+          }}
+          onClose={() => setShowModal(false)}
+        />
+      )}
       <Toast message="welcome" visible={true} />
       <Form />
       <Card
