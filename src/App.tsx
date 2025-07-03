@@ -1,36 +1,27 @@
-import { useState } from "react";
-import "./App.css";
-import Card from "./components/Card";
-import Form from "./components/Form";
-import Modal from "./components/Modal";
+// import { useEffect } from "react";
+// import { useAppContext } from "./context/app.context";
 import Toast from "./components/Toast";
+import Counter from "./components/Counter";
+import ContentBody from "./components/ContentBody";
 
 function App() {
-  const [showModal, setShowModal] = useState(true);
+  // const { state } = useAppContext();
+
+  // useEffect(() => {
+  //   if (state.editingAppointmentId) {
+  //     editAppointment(state.editingAppointmentId);
+  //   }
+  // }, [state.editingAppointmentId]);
 
   return (
-    <>
-      {showModal && (
-        <Modal
-          message="this is a demo modal"
-          onConfirm={() => {
-            setShowModal(false);
-          }}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-      <Toast message="welcome" visible={true} />
-      <Form />
-      <Card
-        id={1235352}
-        name="narayan"
-        email="narayan.pradhan1117@gmail.com"
-        doctor="aniket"
-        date="12-23-2023"
-        purpose="no purpose"
-        slot="11:00"
-      />
-    </>
+    <div className="app">
+      <Toast message={""} visible={false} />
+      <h1 className="main-heading">Appointment Booking System</h1>
+      <div id="counter-container">
+        <Counter />
+      </div>
+      <ContentBody />
+    </div>
   );
 }
 
