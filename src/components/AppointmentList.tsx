@@ -20,11 +20,9 @@ function AppointmentList(): JSX.Element {
   }, []);
 
   return (
-    <div className="w-full md:w-[60%] p-2 md:p-6 bg-white rounded-[10px] max-h-[110vh] overflow-y-auto">
+    <div className="mt-20 w-full md:w-[60%] p-2 md:p-6  bg-white rounded-[10px] max-h-[110vh]  overflow-y-auto">
       <div className="flex flex-row justify-between items-center mb-4">
-        <h2 className="text-center text-2xl font-semibold">
-          Appointments List
-        </h2>
+        <h2 className="text-center text-2xl">Appointments List</h2>
         <div className="flex flex-nowrap gap-[3px]">
           <select
             onChange={handleSortChange}
@@ -38,19 +36,19 @@ function AppointmentList(): JSX.Element {
             <option value="name">Sort by patient name (A-Z)</option>
             <option value="nameR">Sort by patient name (Z-A)</option>
           </select>
-
           <button
             title="Grid view"
-            className={`rounded-sm border-none px-2 py-1 ${
+            className={`hidden md:inline-block rounded-sm border-none px-2 py-1 ${
               state.isGridSelected ? "bg-[#c5c4c4]" : "bg-white"
             }`}
             onClick={() => handleGridViewToggle(true)}
           >
             <i className="fas fa-th-large"></i>
           </button>
+
           <button
             title="List view"
-            className={`rounded-sm border-none px-2 py-1 ${
+            className={`hidden md:inline-block rounded-sm border-none px-2 py-1 ${
               !state.isGridSelected ? "bg-[#c5c4c4]" : "bg-white"
             }`}
             onClick={() => handleGridViewToggle(false)}

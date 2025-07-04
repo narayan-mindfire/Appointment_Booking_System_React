@@ -180,14 +180,19 @@ const AppointmentForm = () => {
   }, []);
 
   return (
-    <div className="form-container">
-      <h2 className="text-center text-2xl mb-3">Appointment Form</h2>
+    <div className="mt-20 bg-white p-6 rounded-lg shadow-md w-full md:w-[35%] max-h-[110vh] overflow-y-auto">
+      <h2 className="text-2xl mb-3">Appointment Form</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name" className="form-label">
+          <label
+            htmlFor="name"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Name
             {validationConfig.name?.includes("isRequired") && (
-              <span id="required-name">*</span>
+              <span id="required-name" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
@@ -196,14 +201,24 @@ const AppointmentForm = () => {
             type="text"
             value={fields.name}
             onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
           />
-          {errors.name && <span className="error-message">{errors.name}</span>}
+          {errors.name && (
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.name}
+            </span>
+          )}
         </div>
         <div>
-          <label htmlFor="email" className="form-label">
+          <label
+            htmlFor="email"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Email
             {validationConfig.email?.includes("isRequired") && (
-              <span id="required-email">*</span>
+              <span id="required-email" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
@@ -212,16 +227,24 @@ const AppointmentForm = () => {
             type="text"
             value={fields.email}
             onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
           />
           {errors.email && (
-            <span className="error-message">{errors.email}</span>
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.email}
+            </span>
           )}
         </div>
         <div>
-          <label htmlFor="date" className="form-label">
+          <label
+            htmlFor="date"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Date
             {validationConfig.date?.includes("isRequired") && (
-              <span id="required-date">*</span>
+              <span id="required-date" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
@@ -230,14 +253,24 @@ const AppointmentForm = () => {
             type="date"
             value={fields.date}
             onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
           />
-          {errors.date && <span className="error-message">{errors.date}</span>}
+          {errors.date && (
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.date}
+            </span>
+          )}
         </div>
         <div>
-          <label htmlFor="doctor" className="form-label">
+          <label
+            htmlFor="doctor"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Doctor
             {validationConfig.doctor?.includes("isRequired") && (
-              <span id="required-doctor">*</span>
+              <span id="required-doctor" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
@@ -246,17 +279,20 @@ const AppointmentForm = () => {
             type="text"
             value={fields.doctor}
             onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
           />
           {errors.doctor && (
-            <span className="error-message">{errors.doctor}</span>
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.doctor}
+            </span>
           )}
         </div>
         {fields.doctor && filteredDocs.length > 0 && (
-          <div className="doc-options" style={{ display: "block" }}>
+          <div className="max-h-[200px] relative mt-1 bg-white overflow-y-auto font-light border border-black rounded-md block">
             {filteredDocs.map((doc) => (
               <div
                 key={doc}
-                className="doctor-option"
+                className="p-1.5 text-base border-b border-gray-300 cursor-pointer hover:bg-gray-400"
                 onClick={() => {
                   setFields((prev) => ({ ...prev, doctor: doc }));
                   setFilteredDocs([]);
@@ -268,14 +304,24 @@ const AppointmentForm = () => {
           </div>
         )}
         <div>
-          <label htmlFor="slot" className="form-label">
+          <label
+            htmlFor="slot"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Slot
             {validationConfig.slot?.includes("isRequired") && (
-              <span id="required-slot">*</span>
+              <span id="required-slot" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
-          <select id="slot" value={fields.slot} onChange={handleInputChange}>
+          <select
+            id="slot"
+            value={fields.slot}
+            onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
+          >
             <option value="">Select a time slot</option>
             {slots.map((slot) => (
               <option key={slot} value={slot}>
@@ -283,13 +329,22 @@ const AppointmentForm = () => {
               </option>
             ))}
           </select>
-          {errors.slot && <span className="error-message">{errors.slot}</span>}
+          {errors.slot && (
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.slot}
+            </span>
+          )}
         </div>
         <div>
-          <label htmlFor="purpose" className="form-label">
+          <label
+            htmlFor="purpose"
+            className="block text-base font-semibold mb-1 mt-1"
+          >
             Purpose
             {validationConfig.purpose?.includes("isRequired") && (
-              <span id="required-purpose">*</span>
+              <span id="required-purpose" className="text-red-500 font-bold">
+                *
+              </span>
             )}
             :
           </label>
@@ -298,12 +353,18 @@ const AppointmentForm = () => {
             type="text"
             value={fields.purpose}
             onChange={handleInputChange}
+            className="w-full p-2 text-base border border-gray-300 rounded-md mt-3 mb-3 focus:outline-none focus:border-black focus:border-2"
           />
           {errors.purpose && (
-            <span className="error-message">{errors.purpose}</span>
+            <span className="text-red-500 text-sm -mt-2 mb-3 block">
+              {errors.purpose}
+            </span>
           )}
         </div>
-        <button type="submit" className="submit-button">
+        <button
+          type="submit"
+          className="w-full h-11 bg-black text-white text-xl rounded-lg hover:bg-gray-700"
+        >
           {state.editingAppointmentId ? "Edit Appointment" : "Book Appointment"}
         </button>
       </form>

@@ -60,7 +60,7 @@ const Card: React.FC<CardProps> = ({ app, isEditing }) => {
             Edit
           </button>
           <button
-            className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-gray-100 hover:border-gray-600"
+            className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
             onClick={() => deleteAppointment(app.id)}
           >
             Delete
