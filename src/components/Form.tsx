@@ -292,7 +292,7 @@ const AppointmentForm = () => {
             {filteredDocs.map((doc) => (
               <div
                 key={doc}
-                className="p-1.5 text-base border-b border-gray-300 cursor-pointer hover:bg-gray-400"
+                className="p-1.5 text-base border-b border-gray-700 cursor-pointer hover:bg-gray-400"
                 onClick={() => {
                   setFields((prev) => ({ ...prev, doctor: doc }));
                   setFilteredDocs([]);
