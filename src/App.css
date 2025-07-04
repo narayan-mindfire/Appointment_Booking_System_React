@@ -120,14 +120,14 @@ form select {
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 form label.form-label {
   font-size: 16px;
   font-weight: 600;
-  color: #000
+  margin: 5px;
 }
 
 form input:focus,

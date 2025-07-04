@@ -8,13 +8,15 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ message, onConfirm, onClose }) => {
   return (
-    <div style={styles.overlay}>
+    <div style={styles.overlay} id="myModal">
       <div style={styles.modal}>
         <span style={styles.close} onClick={onClose}>
           <i className="fa-solid fa-xmark" />
         </span>
         <p>{message}</p>
-        <button onClick={onConfirm}>Confirm</button>
+        <button id="confirm-button" onClick={onConfirm}>
+          Confirm
+        </button>
       </div>
     </div>
   );

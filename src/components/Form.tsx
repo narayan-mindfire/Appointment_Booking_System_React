@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { docs, validationConfig } from "../const/const";
 import { validationService } from "../services/validation.service";
 import { useAppContext } from "../context/app.context";
+import DoctorOption from "./DoctorOption";
+import type { Appointment } from "../types";
 
 const Toast = ({
   message,
@@ -27,25 +29,20 @@ const Toast = ({
 
   return (
     <div
-      style={{
-        backgroundColor,
-        color: "white",
-        padding: "10px 20px",
-        borderRadius: "5px",
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-      }}
+      id="toast-message"
+      className="toast-visible"
+      style={{ backgroundColor }}
     >
       {message}
     </div>
   );
 };
 
-const AppointmentForm = () => {
-  const { state, setState } = useAppContext();
-  const validators = validationService();
+const allSlots = ["10:00", "11:00", "12:00", "1:00"];
 
+const AppointmentForm = () => {
+  const validators = validationService();
+  const { state, setState } = useAppContext();
   const [fields, setFields] = useState({
     name: "",
     email: "",
@@ -56,7 +53,7 @@ const AppointmentForm = () => {
   });
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
   const [slots, setSlots] = useState<string[]>([]);
-  const [filteredDocs, setFilteredDocs] = useState<string[]>(docs);
+  const [filteredDocs, setFilteredDocs] = useState<string[]>([]);
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
@@ -72,6 +69,7 @@ const AppointmentForm = () => {
       purpose: "",
     });
     setErrors({});
+    setFilteredDocs([]);
   };
 
   const handleInputChange = (
@@ -81,6 +79,7 @@ const AppointmentForm = () => {
     setFields((prev) => ({ ...prev, [id]: value }));
 
     if (id === "doctor") {
+      console.log("doctor field");
       const filtered = docs.filter((doc) =>
         doc.toLowerCase().includes(value.toLowerCase())
       );
@@ -106,10 +105,6 @@ const AppointmentForm = () => {
 
     setErrors(tempErrors);
     return valid;
-  };
-
-  const updateAvailableSlots = () => {
-    setSlots(["10:00", "11:00", "12:00", "1:00"]);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -142,7 +137,6 @@ const AppointmentForm = () => {
     setState("appointments", updatedAppointments);
     setState("editingAppointmentId", null);
     setState("formFields", null);
-
     setToast({ message: "Appointment successfully booked!", type: "success" });
     resetForm();
   };
@@ -150,60 +144,183 @@ const AppointmentForm = () => {
   useEffect(() => {
     if (state.formFields) {
       setFields(state.formFields);
+      setErrors({});
     }
   }, [state.formFields]);
 
   useEffect(() => {
-    updateAvailableSlots();
-  }, [fields.date, fields.doctor]);
+    const { date, doctor } = fields;
+
+    if (!date || !doctor) {
+      setSlots([]);
+      return;
+    }
+
+    const today = new Date();
+    const selectedDate = new Date(date);
+    const isToday = today.toDateString() === selectedDate.toDateString();
+
+    const bookedSlots = state.appointments
+      .filter(
+        (appointment: Appointment) =>
+          appointment.date === date &&
+          appointment.doctor === doctor &&
+          appointment.id !== state.editingAppointmentId
+      )
+      .map((appointment: Appointment) => appointment.slot);
+
+    const availableSlots = allSlots.filter((slot) => {
+      const slotHour = Number(slot.split(":"[0]));
+      const isBooked = bookedSlots.includes(slot);
+      const isPastToday = isToday && slotHour <= today.getHours();
+      return !isBooked && !isPastToday;
+    });
+
+    setSlots(availableSlots);
+  }, [
+    fields,
+    fields.date,
+    fields.doctor,
+    state.appointments,
+    state.editingAppointmentId,
+  ]);
+
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const minDate = `${year}-${month}-${day}`;
+
+    const input = document.getElementById("date") as HTMLInputElement | null;
+    if (input) input.min = minDate;
+  }, []);
 
   return (
     <div className="form-container">
       <h2>Appointment Form</h2>
       <form onSubmit={handleSubmit}>
-        {Object.entries(fields).map(([key, value]) => (
-          <div key={key}>
-            <label htmlFor={key}>
-              {key.charAt(0).toUpperCase() + key.slice(1)}:
-            </label>
-            {key === "slot" ? (
-              <select id={key} value={value} onChange={handleInputChange}>
-                <option value="">Select a time slot</option>
-                {slots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                id={key}
-                type={key === "date" ? "date" : "text"}
-                value={value}
-                onChange={handleInputChange}
-              />
+        <div>
+          <label htmlFor="name" className="form-label">
+            Name
+            {validationConfig.name?.includes("isRequired") && (
+              <span id="required-name">*</span>
             )}
-            {errors[key] && (
-              <span className="error-message">{errors[key]}</span>
+            :
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={fields.name}
+            onChange={handleInputChange}
+          />
+          {errors.name && <span className="error-message">{errors.name}</span>}
+        </div>
+        <div>
+          <label htmlFor="email" className="form-label">
+            Email
+            {validationConfig.email?.includes("isRequired") && (
+              <span id="required-email">*</span>
             )}
-          </div>
-        ))}
-
-        {fields.doctor && (
-          <div className="doc-options">
+            :
+          </label>
+          <input
+            id="email"
+            type="text"
+            value={fields.email}
+            onChange={handleInputChange}
+          />
+          {errors.email && (
+            <span className="error-message">{errors.email}</span>
+          )}
+        </div>
+        <div>
+          <label htmlFor="date" className="form-label">
+            Date
+            {validationConfig.date?.includes("isRequired") && (
+              <span id="required-date">*</span>
+            )}
+            :
+          </label>
+          <input
+            id="date"
+            type="date"
+            value={fields.date}
+            onChange={handleInputChange}
+          />
+          {errors.date && <span className="error-message">{errors.date}</span>}
+        </div>
+        <div>
+          <label htmlFor="doctor" className="form-label">
+            Doctor
+            {validationConfig.doctor?.includes("isRequired") && (
+              <span id="required-doctor">*</span>
+            )}
+            :
+          </label>
+          <input
+            id="doctor"
+            type="text"
+            value={fields.doctor}
+            onChange={handleInputChange}
+          />
+          {errors.doctor && (
+            <span className="error-message">{errors.doctor}</span>
+          )}
+        </div>
+        {fields.doctor && filteredDocs.length > 0 && (
+          <div className="doc-options" style={{ display: "block" }}>
             {filteredDocs.map((doc) => (
               <div
                 key={doc}
                 className="doctor-option"
-                onClick={() => setFields((prev) => ({ ...prev, doctor: doc }))}
+                onClick={() => {
+                  setFields((prev) => ({ ...prev, doctor: doc }));
+                  setFilteredDocs([]);
+                }}
               >
-                {doc}
+                <DoctorOption doc={doc} />
               </div>
             ))}
           </div>
         )}
-
-        <button type="submit">
+        <div>
+          <label htmlFor="slot" className="form-label">
+            Slot
+            {validationConfig.slot?.includes("isRequired") && (
+              <span id="required-slot">*</span>
+            )}
+            :
+          </label>
+          <select id="slot" value={fields.slot} onChange={handleInputChange}>
+            <option value="">Select a time slot</option>
+            {slots.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot}
+              </option>
+            ))}
+          </select>
+          {errors.slot && <span className="error-message">{errors.slot}</span>}
+        </div>
+        <div>
+          <label htmlFor="purpose" className="form-label">
+            Purpose
+            {validationConfig.purpose?.includes("isRequired") && (
+              <span id="required-purpose">*</span>
+            )}
+            :
+          </label>
+          <input
+            id="purpose"
+            type="text"
+            value={fields.purpose}
+            onChange={handleInputChange}
+          />
+          {errors.purpose && (
+            <span className="error-message">{errors.purpose}</span>
+          )}
+        </div>
+        <button type="submit" className="submit-button">
           {state.editingAppointmentId ? "Edit Appointment" : "Book Appointment"}
         </button>
       </form>

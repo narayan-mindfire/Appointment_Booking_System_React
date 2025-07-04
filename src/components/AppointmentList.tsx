@@ -27,10 +27,10 @@ function AppointmentList(): JSX.Element {
           <select id="sort" onChange={handleSortChange}>
             <option>Sort appointments (default)</option>
             <option id="sDate" value="date">
-              Sort by date (newest to oldest)
+              Sort by date (closest first)
             </option>
             <option id="sDate" value="dateR">
-              Sort by date (oldest to newest)
+              Sort by date (closest last)
             </option>
             <option id="sDname" value="doctor">
               Sort by doctor name (A-Z)
