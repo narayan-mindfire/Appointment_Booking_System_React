@@ -58,7 +58,15 @@ function AppointmentList(): JSX.Element {
         </div>
       </div>
 
-      {state.isGridSelected ? <AppointmentCards /> : <Table />}
+      {state.appointments.length === 0 ? (
+        <div className="text-center text-gray-600 text-base mt-10">
+          There are no appointments yet. Please create one to get started.
+        </div>
+      ) : state.isGridSelected ? (
+        <AppointmentCards />
+      ) : (
+        <Table />
+      )}
     </div>
   );
 }
