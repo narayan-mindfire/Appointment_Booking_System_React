@@ -41,14 +41,14 @@ const Card: React.FC<CardProps> = ({ app, isEditing }) => {
           <div title="date" className="text-left flex-1">
             <span className="block text-xs text-gray-500 mb-1">
               <i className="fa-solid fa-calendar-days mr-1"></i>
+              <span className="text-lg font-semibold">{app.date}</span>
             </span>
-            <span className="text-lg font-semibold">{app.date}</span>
           </div>
           <div title="slot" className="text-right flex-1">
             <span className="block text-xs text-gray-500 mb-1">
               <i className="fa-solid fa-clock mr-1"></i>
+              <span className="text-lg font-semibold">{app.slot}</span>
             </span>
-            <span className="text-lg font-semibold">{app.slot}</span>
           </div>
         </div>
 
