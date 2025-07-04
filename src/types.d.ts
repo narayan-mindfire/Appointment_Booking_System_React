@@ -18,5 +18,6 @@ export interface State {
     editingAppointmentId: EditingAppointmentId,
     sortAppointmentsBy: SortAppointmentsBy,
     isGridSelected: IsGridSelected,
-    appointments: Appointment[]
+    appointments: Appointment[],
+    formFields?: Omit<Appointment, "id"> | null;
 }

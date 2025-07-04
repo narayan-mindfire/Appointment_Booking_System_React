@@ -1,49 +1,76 @@
 import type { Appointment } from "../types";
-function Card(app: Appointment) {
+import { useAppointmentActions } from "../hooks/useAppointmentActions";
+
+interface CardProps {
+  app: Appointment;
+  isEditing: boolean;
+}
+
+const Card: React.FC<CardProps> = ({ app, isEditing }) => {
+  const { deleteAppointment, editAppointment, modal } = useAppointmentActions();
+
   return (
     <>
-      <div className="card-content">
-        <div className="header-section">
-          <h3 className="patient-name" title="patient">
+      <div
+        className={`flex shadow-xl flex-col w-full sm:w-1/2 md:w-8/20 lg:w-2/5 p-5 rounded-[10px] border border-gray-300 ${
+          isEditing ? "bg-gray-200 border-black border-2" : "hover:bg-gray-100"
+        }`}
+      >
+        <div className="mb-4">
+          <h3
+            title="patient name"
+            className="text-2xl font-bold text-black mt-0"
+          >
             {app.name}
           </h3>
-          <p className="doctorEle-info">
-            <span className="doctorEle-name" title="doctorEle">
-              <i className="fa-solid fa-stethoscope"></i> {app.doctor}
+          <p title="doctor" className="text-15 font-normal text-gray-700 m-0">
+            <span className="font-semibold text-black">
+              <i className="fa-solid fa-stethoscope mr-1"></i> {app.doctor}
             </span>
           </p>
         </div>
 
-        <p className="purpose-info" title="purpose">
+        <p
+          title="purpose"
+          className="text-sm text-gray-600 my-4 leading-relaxed"
+        >
           {app.purpose}
         </p>
 
-        <div className="details-section">
-          <div className="detail-item">
-            <span className="detail-label">
-              {" "}
-              <i className="fa-solid fa-calendar-days" title="date"></i>
-            </span>
-            <span className="detail-value" title="date">
-              {app.date}
+        <div className="flex justify-between items-end pt-4 mt-4">
+          <div title="date" className="text-left flex-1">
+            <span className="block text-xs text-gray-500 mb-1">
+              <i className="fa-solid fa-calendar-days mr-1"></i>
+              <span className="text-lg font-semibold">{app.date}</span>
             </span>
           </div>
-          <div className="detail-item">
-            <span className="detail-label" title="time">
-              <i className="fa-solid fa-clock "></i>
-            </span>
-            <span className="detail-value" title="time">
-              {app.slot}
+          <div title="slot" className="text-right flex-1">
+            <span className="block text-xs text-gray-500 mb-1">
+              <i className="fa-solid fa-clock mr-1"></i>
+              <span className="text-lg font-semibold">{app.slot}</span>
             </span>
           </div>
         </div>
+
+        <div className="flex justify-evenly gap-2 mt-4 pt-4">
+          <button
+            className="flex-1 px-3 py-2 text-15px font-medium rounded-md bg-black text-white border border-black hover:bg-gray-800"
+            onClick={() => editAppointment(app)}
+          >
+            Edit
+          </button>
+          <button
+            className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
+            onClick={() => deleteAppointment(app.id)}
+          >
+            Delete
+          </button>
+        </div>
       </div>
-      <div className="card-buttons">
-        <button className="edit">Edit</button>
-        <button className="delete">Delete</button>
-      </div>
+
+      {modal}
     </>
   );
-}
+};
 
 export default Card;

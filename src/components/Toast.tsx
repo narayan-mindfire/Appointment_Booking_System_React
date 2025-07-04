@@ -1,48 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-type ToastType = "success" | "warning" | "error";
-
-interface ToastProps {
-  message: string;
-  type?: ToastType;
-  visible: boolean;
-}
-
-const Toast: React.FC<ToastProps> = ({
+const Toast = ({
   message,
-  type = "success",
-  visible,
+  type,
+}: {
+  message: string;
+  type: "success" | "warning" | "error";
 }) => {
-  const [show, setShow] = useState(visible);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (visible) {
-      setShow(true);
-      const timer = setTimeout(() => setShow(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [visible, message, type]);
+    const timer = setTimeout(() => setVisible(false), 3000);
+    return () => clearTimeout(timer);
+  }, [message]);
 
-  const backgroundColor =
-    {
-      success: "green",
-      warning: "orange",
-      error: "red",
-    }[type] || "gray";
+  if (!visible) return null;
 
-  return (
-    <div
-      id="toast-message"
-      style={{
-        backgroundColor,
-        position: "fixed",
-        transition: "opacity 0.3s ease",
-        opacity: show ? 1 : 0,
-      }}
-    >
-      {message}
-    </div>
-  );
+  const baseClasses =
+    "fixed top-5 right-5 z-10 px-5 py-3 rounded text-white font-bold shadow-lg transition-opacity duration-500 ease-in-out opacity-100";
+
+  const typeClasses =
+    type === "success"
+      ? "bg-green-600"
+      : type === "warning"
+      ? "bg-orange-500"
+      : "bg-red-600";
+
+  return <div className={`${baseClasses} ${typeClasses}`}>{message}</div>;
 };
 
 export default Toast;
