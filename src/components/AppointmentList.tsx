@@ -20,47 +20,39 @@ function AppointmentList(): JSX.Element {
   }, []);
 
   return (
-    <div className="appointment-list">
-      <div className="appointment-head">
-        <h2 className="text-center text-2xl mb-3">Appointments List</h2>
-        <div className="app-options">
-          <select id="sort" onChange={handleSortChange}>
+    <div className="w-full md:w-[60%] p-2 md:p-6 bg-white rounded-[10px] max-h-[110vh] overflow-y-auto">
+      <div className="flex flex-row justify-between items-center mb-4">
+        <h2 className="text-center text-2xl font-semibold">
+          Appointments List
+        </h2>
+        <div className="flex flex-nowrap gap-[3px]">
+          <select
+            onChange={handleSortChange}
+            className="w-[180px] border border-gray-300 rounded-md font-medium focus:outline-none focus:border-black focus:border-2 text-sm px-2 py-[6px]"
+          >
             <option>Sort appointments (default)</option>
-            <option id="sDate" value="date">
-              Sort by date (closest first)
-            </option>
-            <option id="sDate" value="dateR">
-              Sort by date (closest last)
-            </option>
-            <option id="sDname" value="doctor">
-              Sort by doctor name (A-Z)
-            </option>
-            <option id="sDname" value="doctorR">
-              Sort by doctor name (Z-A)
-            </option>
-            <option id="sPname" value="name">
-              Sort by patient name (A-Z)
-            </option>
-            <option id="sPname" value="nameR">
-              Sort by patient name (Z-A)
-            </option>
+            <option value="date">Sort by date (closest first)</option>
+            <option value="dateR">Sort by date (closest last)</option>
+            <option value="doctor">Sort by doctor name (A-Z)</option>
+            <option value="doctorR">Sort by doctor name (Z-A)</option>
+            <option value="name">Sort by patient name (A-Z)</option>
+            <option value="nameR">Sort by patient name (Z-A)</option>
           </select>
+
           <button
-            id="btn-half"
             title="Grid view"
-            style={{
-              backgroundColor: state.isGridSelected ? "#c5c4c4" : "#fff",
-            }}
+            className={`rounded-sm border-none px-2 py-1 ${
+              state.isGridSelected ? "bg-[#c5c4c4]" : "bg-white"
+            }`}
             onClick={() => handleGridViewToggle(true)}
           >
             <i className="fas fa-th-large"></i>
           </button>
           <button
-            id="btn-full"
             title="List view"
-            style={{
-              backgroundColor: !state.isGridSelected ? "#c5c4c4" : "#fff",
-            }}
+            className={`rounded-sm border-none px-2 py-1 ${
+              !state.isGridSelected ? "bg-[#c5c4c4]" : "bg-white"
+            }`}
             onClick={() => handleGridViewToggle(false)}
           >
             <i className="fas fa-list"></i>

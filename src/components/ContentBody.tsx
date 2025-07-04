@@ -3,7 +3,7 @@ import AppointmentForm from "./Form";
 
 function ContentBody() {
   return (
-    <div className="content">
+    <div className="flex flex-wrap justify-between p-[30px] bg-black">
       <AppointmentForm />
       <AppointmentList />
     </div>

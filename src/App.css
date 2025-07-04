@@ -529,7 +529,7 @@ form select:focus {
     font-size: 13px;
   }
  
-  .form-container h2, .appointment-list h2{
+  .form-container h2, .-list h2{
     font-size: 20px;
   }
 
