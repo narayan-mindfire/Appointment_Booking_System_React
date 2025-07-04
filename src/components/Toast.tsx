@@ -1,44 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-type ToastType = "success" | "warning" | "error";
-
-interface ToastProps {
-  message: string;
-  type?: ToastType;
-  visible: boolean;
-}
-
-const Toast: React.FC<ToastProps> = ({
+const Toast = ({
   message,
-  type = "success",
-  visible,
+  type,
+}: {
+  message: string;
+  type: "success" | "warning" | "error";
 }) => {
-  const [show, setShow] = useState(visible);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (visible) {
-      setShow(true);
-      const timer = setTimeout(() => setShow(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [visible, message, type]);
+    const timer = setTimeout(() => setVisible(false), 3000);
+    return () => clearTimeout(timer);
+  }, [message]);
 
-  const backgroundColor =
-    {
-      success: "green",
-      warning: "orange",
-      error: "red",
-    }[type] || "gray";
+  if (!visible) return null;
+
+  const backgroundColor = {
+    success: "green",
+    warning: "orange",
+    error: "red",
+  }[type];
 
   return (
     <div
       id="toast-message"
-      style={{
-        backgroundColor,
-        position: "fixed",
-        transition: "opacity 0.3s ease",
-        opacity: show ? 1 : 0,
-      }}
+      className="toast-visible"
+      style={{ backgroundColor }}
     >
       {message}
     </div>

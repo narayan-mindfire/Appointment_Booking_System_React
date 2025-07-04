@@ -4,39 +4,7 @@ import { validationService } from "../services/validation.service";
 import { useAppContext } from "../context/app.context";
 import DoctorOption from "./DoctorOption";
 import type { Appointment } from "../types";
-
-const Toast = ({
-  message,
-  type,
-}: {
-  message: string;
-  type: "success" | "warning" | "error";
-}) => {
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 3000);
-    return () => clearTimeout(timer);
-  }, [message]);
-
-  if (!visible) return null;
-
-  const backgroundColor = {
-    success: "green",
-    warning: "orange",
-    error: "red",
-  }[type];
-
-  return (
-    <div
-      id="toast-message"
-      className="toast-visible"
-      style={{ backgroundColor }}
-    >
-      {message}
-    </div>
-  );
-};
+import Toast from "./Toast";
 
 const allSlots = ["10:00", "11:00", "12:00", "1:00"];
 
@@ -95,7 +63,7 @@ const AppointmentForm = () => {
       const rules = validationConfig[key] || [];
       for (const rule of rules) {
         const validate = validators[rule];
-        if (validate && !validate(fields[key as keyof typeof fields], key)) {
+        if (validate && !validate(fields[key as keyof typeof fields])) {
           tempErrors[key] = `${key} is invalid.`;
           valid = false;
           break;
@@ -192,8 +160,25 @@ const AppointmentForm = () => {
     const day = String(today.getDate()).padStart(2, "0");
     const minDate = `${year}-${month}-${day}`;
 
+    if (state.editingAppointmentId) {
+      const appointmentToEdit = state.appointments.find(
+        (a) => a.id === state.editingAppointmentId
+      );
+      if (appointmentToEdit) {
+        setFields({
+          name: appointmentToEdit.name,
+          email: appointmentToEdit.email,
+          date: appointmentToEdit.date,
+          doctor: appointmentToEdit.doctor,
+          slot: appointmentToEdit.slot,
+          purpose: appointmentToEdit.purpose,
+        });
+      }
+    }
+
     const input = document.getElementById("date") as HTMLInputElement | null;
     if (input) input.min = minDate;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

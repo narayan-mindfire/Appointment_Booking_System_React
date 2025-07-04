@@ -221,6 +221,7 @@ form select:focus {
   color: red;
   font-size: 13px;
   margin-top: -10px;
+  margin-bottom: 10px;
   display: block;
 }
 
@@ -514,7 +515,6 @@ form select:focus {
   form label.form-label {
     font-size: 13px;
     font-weight: 600;
-    background-color: #000;
   }
 
   form input,

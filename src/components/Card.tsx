@@ -1,12 +1,23 @@
 import type { Appointment } from "../types";
 import { useAppointmentActions } from "../hooks/useAppointmentActions";
 
-function Card({ app }: { app: Appointment }) {
+interface CardProps {
+  app: Appointment;
+  isEditing: boolean;
+}
+
+const Card: React.FC<CardProps> = ({ app, isEditing }) => {
   const { deleteAppointment, editAppointment, modal } = useAppointmentActions();
 
   return (
     <>
-      <div className="appointment-card card-content">
+      <div
+        className={
+          isEditing
+            ? "highlighted appointment-card card-content"
+            : "appointment-card card-content"
+        }
+      >
         <div className="header-section">
           <h3 className="patient-name">{app.name}</h3>
           <p className="doctorEle-info">
@@ -43,6 +54,6 @@ function Card({ app }: { app: Appointment }) {
       {modal}
     </>
   );
-}
+};
 
 export default Card;

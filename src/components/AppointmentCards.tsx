@@ -17,7 +17,11 @@ function AppointmentCards(): JSX.Element {
   return (
     <div id="appointment-cards" className="appointment-cards">
       {appointments.map((app) => (
-        <Card key={app.id} app={app} />
+        <Card
+          key={app.id}
+          app={app}
+          isEditing={app.id === state.editingAppointmentId}
+        />
       ))}
     </div>
   );
