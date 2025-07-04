@@ -127,6 +127,7 @@ form select {
 form label.form-label {
   font-size: 16px;
   font-weight: 600;
+  color: #000
 }
 
 form input:focus,
@@ -513,6 +514,7 @@ form select:focus {
   form label.form-label {
     font-size: 13px;
     font-weight: 600;
+    background-color: #000;
   }
 
   form input,

@@ -3,6 +3,7 @@
 import Toast from "./components/Toast";
 import Counter from "./components/Counter";
 import ContentBody from "./components/ContentBody";
+import "./App.css";
 
 function App() {
   // const { state } = useAppContext();

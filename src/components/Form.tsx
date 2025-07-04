@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { docs, validationConfig } from "../const/const";
 import { validationService } from "../services/validation.service";
-import stateService from "../services/app.state";
+import { useAppContext } from "../context/app.context";
 
 const Toast = ({
   message,
@@ -43,7 +43,9 @@ const Toast = ({
 };
 
 const AppointmentForm = () => {
+  const { state, setState } = useAppContext();
   const validators = validationService();
+
   const [fields, setFields] = useState({
     name: "",
     email: "",
@@ -107,7 +109,7 @@ const AppointmentForm = () => {
   };
 
   const updateAvailableSlots = () => {
-    setSlots(["10:00", "11:00", "12:00", "1:00"]); // Dummy values
+    setSlots(["10:00", "11:00", "12:00", "1:00"]);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -121,23 +123,35 @@ const AppointmentForm = () => {
       return;
     }
 
-    const updatedAppointments = [...stateService.getState("appointments")];
-    const editingId = stateService.getState("editingAppointmentId");
+    const updatedAppointments = [...state.appointments];
 
-    if (editingId) {
-      const idx = updatedAppointments.findIndex((a) => a.id === editingId);
+    if (state.editingAppointmentId) {
+      const idx = updatedAppointments.findIndex(
+        (a) => a.id === state.editingAppointmentId
+      );
       if (idx !== -1) {
-        updatedAppointments[idx] = { id: editingId, ...fields };
-        stateService.setState("editingAppointmentId", null);
+        updatedAppointments[idx] = {
+          id: state.editingAppointmentId,
+          ...fields,
+        };
       }
     } else {
       updatedAppointments.push({ id: Date.now(), ...fields });
     }
 
-    stateService.setState("appointments", updatedAppointments);
+    setState("appointments", updatedAppointments);
+    setState("editingAppointmentId", null);
+    setState("formFields", null);
+
     setToast({ message: "Appointment successfully booked!", type: "success" });
     resetForm();
   };
+
+  useEffect(() => {
+    if (state.formFields) {
+      setFields(state.formFields);
+    }
+  }, [state.formFields]);
 
   useEffect(() => {
     updateAvailableSlots();
@@ -189,7 +203,9 @@ const AppointmentForm = () => {
           </div>
         )}
 
-        <button type="submit">Book Appointment</button>
+        <button type="submit">
+          {state.editingAppointmentId ? "Edit Appointment" : "Book Appointment"}
+        </button>
       </form>
       {toast && <Toast message={toast.message} type={toast.type} />}
     </div>

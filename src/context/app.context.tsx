@@ -13,6 +13,7 @@ const defaultState: State = {
   isGridSelected: loadData("isGridSelected", true),
   editingAppointmentId: loadData("editingAppointmentId", null),
   sortAppointmentsBy: null,
+  formFields: null,
 };
 
 interface AppContextType {
