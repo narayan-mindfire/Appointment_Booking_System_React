@@ -37,4 +37,4 @@ const docs = [
 type slot = "10:00"| "11:00"| "12:00"| "1:00"
 const slots : slot[]= ["10:00", "11:00", "12:00", "1:00"];
 
-export { validationConfig, docs, slots };
+export { validationConfig, docs, slots as allSlots };

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { docs, validationConfig } from "../const/const";
+import { allSlots, docs, validationConfig } from "../const/const";
 import { validationService } from "../services/validation.service";
 import { useAppContext } from "../context/app.context";
 import DoctorOption from "./DoctorOption";
 import type { Appointment } from "../types";
 import Toast from "./Toast";
-
-const allSlots = ["10:00", "11:00", "12:00", "1:00"];
 
 const AppointmentForm = () => {
   const validators = validationService();
@@ -183,7 +181,7 @@ const AppointmentForm = () => {
 
   return (
     <div className="form-container">
-      <h2>Appointment Form</h2>
+      <h2 className="text-center text-2xl mb-3">Appointment Form</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name" className="form-label">
