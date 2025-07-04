@@ -5,9 +5,7 @@ function ContentBody() {
   return (
     <div className="content">
       <AppointmentForm />
-      <div id="appointment-list-container">
-        <AppointmentList />
-      </div>
+      <AppointmentList />
     </div>
   );
 }

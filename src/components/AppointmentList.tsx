@@ -22,7 +22,7 @@ function AppointmentList(): JSX.Element {
   return (
     <div className="appointment-list">
       <div className="appointment-head">
-        <h2>Appointments List</h2>
+        <h2 className="text-center text-2xl mb-3">Appointments List</h2>
         <div className="app-options">
           <select id="sort" onChange={handleSortChange}>
             <option>Sort appointments (default)</option>

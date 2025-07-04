@@ -16,21 +16,17 @@ const Toast = ({
 
   if (!visible) return null;
 
-  const backgroundColor = {
-    success: "green",
-    warning: "orange",
-    error: "red",
-  }[type];
+  const baseClasses =
+    "fixed top-5 right-5 z-10 px-5 py-3 rounded text-white font-bold shadow-lg transition-opacity duration-500 ease-in-out opacity-100";
 
-  return (
-    <div
-      id="toast-message"
-      className="toast-visible"
-      style={{ backgroundColor }}
-    >
-      {message}
-    </div>
-  );
+  const typeClasses =
+    type === "success"
+      ? "bg-green-600"
+      : type === "warning"
+      ? "bg-orange-500"
+      : "bg-red-600";
+
+  return <div className={`${baseClasses} ${typeClasses}`}>{message}</div>;
 };
 
 export default Toast;

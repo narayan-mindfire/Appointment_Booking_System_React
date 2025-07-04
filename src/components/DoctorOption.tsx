@@ -2,7 +2,7 @@ import type { JSX } from "react";
 
 function DoctorOption({ doc }: { doc: string }): JSX.Element {
   return (
-    <div className="doctor-option" style={{ borderBottom: "1px solid black" }}>
+    <div className="cursor-pointer px-2 py-1 text-[17px] border-b border-black hover:bg-[#c5c4c4]">
       {doc}
     </div>
   );

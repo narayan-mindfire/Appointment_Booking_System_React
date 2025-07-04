@@ -34,11 +34,6 @@ body {
   background-color: #000;
 }
 
-#appointment-list-container {
-  all: unset;
-  display: contents;
-}
-
 #counter-container{
   all: unser;
   display: contents;
@@ -247,9 +242,9 @@ form select:focus {
   overflow-y: auto;
 }
 
-#appointment-cards.full-width-view .appointment-card {
+/* #appointment-cards.full-width-view .appointment-card {
   width: 100%;
-}
+} */
 
 .appointment-head{
   display: flex;
@@ -258,19 +253,19 @@ form select:focus {
   align-items: center;
 }
 
-.appointment-card {
+/* .appointment-card {
   width: 43%; 
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-}
+} */
 
-.appointment-card:hover{
+/* .appointment-card:hover{
   background-color: #f9f9f9;
 
-}
+} */
 
 .highlighted{
   background-color: rgb(226, 224, 224) !important;
@@ -339,10 +334,10 @@ form select:focus {
 }
 
 
-.card-content {
+/* .card-content {
   flex-grow: 1;
   margin-bottom: 15px;
-}
+} */
 
 .header-section {
   margin-bottom: 15px;
@@ -403,43 +398,43 @@ form select:focus {
   font-weight: 600;
 }
 
-.card-buttons {
+/* .card-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   margin-top: 15px;
   padding-top: 15px;
-}
+} */
 
-.card-buttons button {
+/* .card-buttons button {
   flex: 1;
   padding: 8px 12px;
   font-size: 15px;
   font-weight: 500;
   border-radius: 6px;
-}
+} */
 
-.card-buttons .edit {
+/* .card-buttons .edit {
   background-color: #000;
   color: #fff;
   border: 1px solid #000;
-}
+} */
 
-.card-buttons .edit:hover {
+/* .card-buttons .edit:hover {
   background-color: #333;
   border-color: #333;
-}
+} */
 
-.card-buttons .delete {
+/* .card-buttons .delete {
   background-color: #fff;
   color: #000;
   border: 1px solid #888;
-}
+} */
 
-.card-buttons .delete:hover {
+/* .card-buttons .delete:hover {
   background-color: #f0f0f0;
   border-color: #555;
-}
+} */
 
 .app-options{
   display: flex;
@@ -554,7 +549,7 @@ form select:focus {
     overflow-x: unset;
     scroll-snap-align: unset;
   }
-  .appointment-card {
+  /* .appointment-card {
     width: 100%; 
     background-color: #fff;
     border-radius: 10px;
@@ -563,12 +558,12 @@ form select:focus {
     display: flex; 
     flex-direction: column;
     justify-content: space-between; 
-  }
-
+  } */
+/* 
   .card-content {
     flex-grow: 1; 
     margin-bottom: 5px; 
-  }
+  } */
 
   .header-section {
     margin-bottom: 5px;
@@ -628,7 +623,7 @@ form select:focus {
     color: #000;
   }
 
-  .card-buttons {
+  /* .card-buttons {
     display: flex;
     justify-content: space-between;
     gap: 10px; 
@@ -642,9 +637,9 @@ form select:focus {
     font-size: 13px;
     font-weight: 400;
     border-radius: 6px; 
-  }
+  } */
 
-  .card-buttons .edit {
+  /* .card-buttons .edit {
     background-color: #000;
     color: #fff;
     border: 1px solid #000;
@@ -659,7 +654,7 @@ form select:focus {
     background-color: #fff;
     color: #000;
     border: 1px solid #888;
-  }
+  } */
 
   #toast-message {
     position: fixed;

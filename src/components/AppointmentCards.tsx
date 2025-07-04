@@ -15,7 +15,10 @@ function AppointmentCards(): JSX.Element {
   }
 
   return (
-    <div id="appointment-cards" className="appointment-cards">
+    <div
+      id="appointment-cards"
+      className="flex flex-wrap gap-20 max-w-[100%] flex-row justify-between max-h-[80vh] overflow-y-auto"
+    >
       {appointments.map((app) => (
         <Card
           key={app.id}
