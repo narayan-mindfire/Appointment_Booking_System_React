@@ -11,7 +11,7 @@ import type { State } from "../types";
 const defaultState: State = {
   appointments: loadData("appointments", []),
   isGridSelected: loadData("isGridSelected", true),
-  editingAppointmentId: loadData("editingAppointmentId", null),
+  editingAppointmentId: null,
   sortAppointmentsBy: null,
   formFields: null,
 };
