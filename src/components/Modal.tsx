@@ -10,7 +10,7 @@ const Modal: React.FC<ModalProps> = ({ message, onConfirm, onClose }) => {
   return (
     <div
       id="myModal"
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75"
     >
       <div className="relative w-[90%] max-w-md bg-white p-6 rounded-lg text-center shadow-lg">
         <span

@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from "react";
+import { type JSX } from "react";
 import AppointmentCards from "./AppointmentCards";
 import Table from "./Table";
 import { useAppContext } from "../context/app.context";
@@ -14,10 +14,6 @@ function AppointmentList(): JSX.Element {
   const handleGridViewToggle = (isGrid: boolean) => {
     setState("isGridSelected", isGrid);
   };
-
-  useEffect(() => {
-    console.log("appointmentlist rendered");
-  }, []);
 
   return (
     <div className="mt-20 w-full md:w-[60%] p-2 md:p-6  bg-white rounded-[10px] max-h-[110vh]  overflow-y-auto">
