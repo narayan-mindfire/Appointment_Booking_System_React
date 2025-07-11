@@ -3,16 +3,17 @@ import { useAppointmentActions } from "../hooks/useAppointmentActions";
 
 interface CardProps {
   app: Appointment;
-  isEditing: boolean;
+  isEditing?: boolean;
+  readonly: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ app, isEditing }) => {
+const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
   const { deleteAppointment, editAppointment, modal } = useAppointmentActions();
 
   return (
     <>
       <div
-        className={`flex shadow-xl flex-col w-full sm:w-1/2 md:w-8/20 lg:w-2/5 p-5 rounded-[10px] border border-gray-300 ${
+        className={`flex shadow-xl flex-col w-full max-w-md mx-auto p-5 rounded-[10px] border border-gray-300 ${
           isEditing ? "bg-gray-200 border-black border-2" : "hover:bg-gray-100"
         }`}
       >
@@ -52,20 +53,22 @@ const Card: React.FC<CardProps> = ({ app, isEditing }) => {
           </div>
         </div>
 
-        <div className="flex justify-evenly gap-2 mt-4 pt-4">
-          <button
-            className="flex-1 px-3 py-2 text-15px font-medium rounded-md bg-black text-white border border-black hover:bg-gray-800"
-            onClick={() => editAppointment(app)}
-          >
-            Edit
-          </button>
-          <button
-            className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
-            onClick={() => deleteAppointment(app.id)}
-          >
-            Delete
-          </button>
-        </div>
+        {!readonly && (
+          <div className="flex justify-evenly gap-2 mt-4 pt-4">
+            <button
+              className="flex-1 px-3 py-2 text-15px font-medium rounded-md bg-black text-white border border-black hover:bg-gray-800"
+              onClick={() => editAppointment(app)}
+            >
+              Edit
+            </button>
+            <button
+              className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
+              onClick={() => deleteAppointment(app.id)}
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       {modal}

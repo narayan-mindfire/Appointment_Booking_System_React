@@ -1,11 +1,11 @@
 export interface Appointment {
   id: number;
   name: string;
-  email: string;
   date: string;   
   doctor: string;
   slot: string;
   purpose: string;
+  status: string;
 }
 
 export type EditingAppointmentId = number | null

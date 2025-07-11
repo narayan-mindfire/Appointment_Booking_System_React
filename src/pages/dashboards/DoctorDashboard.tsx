@@ -1,0 +1,61 @@
+import { useEffect, useState } from "react";
+import axiosInstance from "../../api/axiosInterceptor";
+import { useNavigate } from "react-router-dom";
+import type { Appointment } from "../../types";
+import Card from "../../components/Card";
+
+const DoctorDashboard = () => {
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const res = await axiosInstance.get("/appointments/me");
+        console.log(res);
+        setAppointments(res.data);
+      } catch (err) {
+        console.error("Failed to fetch appointments", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAppointments();
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-black px-6 md:px-12 py-8">
+      <div className="flex justify-between items-center mb-8 border-b pb-4">
+        <h1 className="text-3xl font-bold">Doctor Dashboard</h1>
+        <button
+          onClick={logout}
+          className="px-4 py-2 text-sm font-medium border border-black rounded hover:bg-black hover:text-white transition"
+        >
+          Logout
+        </button>
+      </div>
+
+      <h2 className="text-2xl font-semibold mb-6">Your Appointments</h2>
+
+      {loading ? (
+        <p className="text-gray-600">Loading appointments...</p>
+      ) : appointments.length === 0 ? (
+        <p className="text-gray-600">No appointments found.</p>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {appointments.map((appt) => (
+            <Card app={appt} readonly={true} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DoctorDashboard;
