@@ -45,7 +45,6 @@ const AppointmentForm = () => {
     setFields((prev) => ({ ...prev, [id]: value }));
 
     if (id === "doctor") {
-      console.log("doctor field");
       const filtered = docs.filter((doc) =>
         doc.toLowerCase().includes(value.toLowerCase())
       );
