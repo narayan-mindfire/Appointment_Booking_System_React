@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInterceptor";
 import type { Appointment } from "../../types";
 import Card from "../../components/Card";
+import Button from "../../components/Button";
 
 const PatientDashboard = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -32,13 +33,15 @@ const PatientDashboard = () => {
   return (
     <div className="min-h-screen bg-white text-black px-6 md:px-12 py-8">
       <div className="flex justify-between items-center mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
-        <button
-          onClick={logout}
-          className="px-4 py-2 text-sm font-medium border border-black rounded hover:bg-black hover:text-white transition"
-        >
-          Logout
-        </button>
+        <h1 className="text-3xl font-bold">Doctor Dashboard</h1>
+        <div className="flex gap-3">
+          <Button onClick={() => navigate("/profile")} variant="default">
+            Profile
+          </Button>
+          <Button onClick={logout} variant="outline">
+            Logout
+          </Button>
+        </div>
       </div>
 
       <h2 className="text-2xl font-semibold mb-6">Your Appointments</h2>
