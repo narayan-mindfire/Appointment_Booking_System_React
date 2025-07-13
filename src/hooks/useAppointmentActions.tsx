@@ -5,6 +5,7 @@ import type { Appointment } from "../types";
 import Button from "../components/Button";
 import axiosInstance from "../api/axiosInterceptor";
 import axios from "axios";
+import AppointmentModal from "../components/appointment/AppointmentModal";
 
 export function useAppointmentActions() {
   const { state, setState } = useAppContext();
@@ -55,12 +56,28 @@ export function useAppointmentActions() {
   }
 
   function editAppointment(appointment: Appointment) {
-    const { id, ...fields } = appointment;
+    const handleClose = () => setModal(null);
+    const handleSuccess = () => {
+      setModal(null);
+      axiosInstance
+        .get("/appointments/me")
+        .then((res) => setState("appointments", res.data));
+    };
 
-    setState("editingAppointmentId", id);
-    setState("formFields", fields);
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setModal(
+      <AppointmentModal
+        onClose={handleClose}
+        onSuccess={handleSuccess}
+        initialData={{
+          id: appointment.id,
+          slot_date: appointment.date,
+          slot_time: appointment.slot,
+          purpose: appointment.purpose,
+          status: appointment.status,
+          doctor: appointment.doctor,
+        }}
+      />
+    );
   }
 
   return {

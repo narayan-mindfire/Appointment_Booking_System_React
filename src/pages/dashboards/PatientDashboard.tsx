@@ -33,10 +33,6 @@ const PatientDashboard = () => {
       <div className="flex justify-between items-center mb-8 border-b pb-4">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
         <div className="flex gap-3">
-          <Button onClick={() => setShowModal(true)} variant="default">
-            + Create Appointment
-          </Button>
-
           <Button onClick={() => navigate("/profile")} variant="default">
             Profile
           </Button>
@@ -46,7 +42,16 @@ const PatientDashboard = () => {
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-6">Your Appointments</h2>
+      <div className="flex justify-between">
+        <h2 className="text-2xl font-semibold mb-6">Your Appointments</h2>
+        <Button
+          onClick={() => setShowModal(true)}
+          variant="default"
+          className="h-[50%]"
+        >
+          + Create Appointment
+        </Button>
+      </div>
 
       {loading ? (
         <p className="text-gray-600">Loading appointments...</p>
