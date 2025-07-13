@@ -11,6 +11,7 @@ interface InputProps {
   placeholder?: string;
   error?: string;
   textarea?: boolean;
+  min?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   error,
   textarea = false,
+  min,
 }) => {
   return (
     <div className="w-full">
@@ -47,6 +49,7 @@ const Input: React.FC<InputProps> = ({
           onChange={onChange}
           placeholder={placeholder}
           className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          min={min}
         />
       )}
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}

@@ -1,5 +1,6 @@
 import type { Appointment } from "../types";
 import { useAppointmentActions } from "../hooks/useAppointmentActions";
+import Button from "./Button";
 
 interface CardProps {
   app: Appointment;
@@ -55,18 +56,30 @@ const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
 
         {!readonly && (
           <div className="flex justify-evenly gap-2 mt-4 pt-4">
-            <button
+            {/* <button
               className="flex-1 px-3 py-2 text-15px font-medium rounded-md bg-black text-white border border-black hover:bg-gray-800"
               onClick={() => editAppointment(app)}
             >
               Edit
-            </button>
-            <button
+            </button> */}
+            <Button
+              variant="default"
+              children={"Edit"}
+              onClick={() => editAppointment(app)}
+              className="w-full"
+            />
+            <Button
+              variant="danger"
+              children={"Delete"}
+              onClick={() => deleteAppointment(app.id)}
+              className="w-full"
+            />
+            {/* <button
               className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
               onClick={() => deleteAppointment(app.id)}
             >
               Delete
-            </button>
+            </button> */}
           </div>
         )}
       </div>

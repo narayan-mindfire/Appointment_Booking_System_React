@@ -2,26 +2,55 @@ import { useAppContext } from "../context/app.context";
 import { useState, type JSX } from "react";
 import Modal from "../components/Modal";
 import type { Appointment } from "../types";
+import Button from "../components/Button";
+import axiosInstance from "../api/axiosInterceptor";
+import axios from "axios";
 
 export function useAppointmentActions() {
   const { state, setState } = useAppContext();
   const [modal, setModal] = useState<null | JSX.Element>(null);
 
   function deleteAppointment(id: number) {
-    const handleConfirm = () => {
-      const updated = state.appointments.filter((app) => app.id !== id);
-      setState("appointments", updated);
-      setModal(null);
+    const handleConfirm = async () => {
+      try {
+        await axiosInstance.delete(`/appointments/${id}`);
+
+        const updated = state.appointments.filter((app) => app.id !== id);
+        setState("appointments", updated);
+        setModal(null);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error("Failed to delete appointment:", error);
+          alert("Failed to delete appointment");
+        } else {
+          console.error("Unexpected error:", error);
+          alert("Something went wrong");
+        }
+      }
     };
 
     const handleClose = () => setModal(null);
 
     setModal(
-      <Modal
-        message="Are you sure you want to delete this appointment?"
-        onConfirm={handleConfirm}
-        onClose={handleClose}
-      />
+      <Modal title="Delete Appointment" onClose={handleClose}>
+        <p className="text-gray-800 text-base mb-6">
+          Are you sure you want to delete this appointment?
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="default"
+            children={"cancel"}
+            onClick={handleClose}
+            className="w-full"
+          />
+          <Button
+            variant="danger"
+            children={"Confirm"}
+            onClick={handleConfirm}
+            className="w-full"
+          />
+        </div>
+      </Modal>
     );
   }
 
