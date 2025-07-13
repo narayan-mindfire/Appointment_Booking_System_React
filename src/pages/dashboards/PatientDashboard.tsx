@@ -4,6 +4,7 @@ import axiosInstance from "../../api/axiosInterceptor";
 import type { Appointment } from "../../types";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
+import { logout } from "../../api/logoutUser";
 
 const PatientDashboard = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -25,15 +26,10 @@ const PatientDashboard = () => {
     fetchAppointments();
   }, []);
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login");
-  };
-
   return (
     <div className="min-h-screen bg-white text-black px-6 md:px-12 py-8">
       <div className="flex justify-between items-center mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold">Doctor Dashboard</h1>
+        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
         <div className="flex gap-3">
           <Button onClick={() => navigate("/profile")} variant="default">
             Profile

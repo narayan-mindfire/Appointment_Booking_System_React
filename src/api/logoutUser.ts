@@ -1,4 +1,6 @@
+import { removeData } from "../storage/app.storage";
+
 export const logout = () => {
-  localStorage.removeItem("accessToken"); 
+  removeData("accessToken"); 
   window.location.href = "/login";        
 };

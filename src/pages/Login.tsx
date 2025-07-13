@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInterceptor";
 import { AxiosError } from "axios";
+import Button from "../components/Button";
+import { saveData } from "../storage/app.storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +18,7 @@ const Login = () => {
 
     try {
       const res = await axiosInstance.post("/auth/login", { email, password });
-      localStorage.setItem("accessToken", res.data.token);
+      saveData("accessToken", res.data.token);
       const userType = res.data.user_type;
       if (userType === "doctor") {
         navigate("/doctor");
@@ -30,9 +32,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-600 px-4">
       <form
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         className="bg-white shadow-md p-8 rounded-md max-w-sm w-full"
       >
         <h2 className="text-2xl font-semibold mb-6">Login</h2>
@@ -60,13 +62,19 @@ const Login = () => {
             required
           />
         </div>
-
-        <button
-          type="submit"
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
-        >
-          Log In
-        </button>
+        <Button
+          variant="default"
+          onClick={handleSubmit}
+          children={"Log In"}
+          className="w-full"
+        />
+        <p className="text-center">or</p>
+        <Button
+          className="w-full"
+          variant="outline"
+          children={"register"}
+          onClick={() => navigate("/register")}
+        />
       </form>
     </div>
   );

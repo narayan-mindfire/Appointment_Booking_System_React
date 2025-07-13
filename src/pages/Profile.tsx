@@ -4,12 +4,13 @@ import type { User } from "../types";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileDetails from "../components/Profile/ProfileDetails";
 import EditProfileForm from "../components/Profile/EditProfileForm";
+import Button from "../components/Button";
+import { logout } from "../api/logoutUser";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [form, setForm] = useState<Partial<User>>({});
-
   const fetchUser = async () => {
     try {
       const res = await axiosInstance.get("/users/me");
@@ -27,6 +28,15 @@ const Profile = () => {
     if (user) {
       setForm(user);
       setEditModalOpen(true);
+    }
+  };
+
+  const deleteMe = async () => {
+    try {
+      await axiosInstance.delete("/users/me");
+      logout();
+    } catch (error) {
+      console.log("Failed to delete user", error);
     }
   };
 
@@ -65,6 +75,14 @@ const Profile = () => {
           onSubmit={handleSubmit}
         />
       )}
+      <div className="flex items-center justify-center mt-40">
+        <Button
+          className=""
+          children={"delete profile"}
+          onClick={deleteMe}
+          variant="danger"
+        />
+      </div>
     </div>
   );
 };

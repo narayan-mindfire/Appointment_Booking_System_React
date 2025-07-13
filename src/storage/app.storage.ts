@@ -13,9 +13,16 @@ function saveData<T>(key:string, data:T) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
+/**
+ * Removes data from localStorage.
+ */
+function removeData(key: string): void {
+  localStorage.removeItem(key);
+}
 
 export {
     loadData,
-    saveData
+    saveData,
+    removeData
 }
 
