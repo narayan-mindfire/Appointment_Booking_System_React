@@ -4,8 +4,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Counter from "./components/Counter";
-import ContentBody from "./components/ContentBody";
 import Login from "./pages/Login";
 import DoctorDashboard from "./pages/dashboards/DoctorDashboard";
 import PatientDashboard from "./pages/dashboards/PatientDashboard";
@@ -27,19 +25,7 @@ function App() {
           <Route path="/doctor" element={<DoctorDashboard />} />
           <Route path="/patient" element={<PatientDashboard />} />
           <Route path="/profile" element={<Profile />} />
-          {/* // fallback */}
-          <Route
-            path="/"
-            element={
-              <>
-                <div id="counter-container">
-                  <Counter />
-                </div>
-                <ContentBody />
-              </>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

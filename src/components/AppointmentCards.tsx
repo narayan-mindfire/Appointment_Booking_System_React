@@ -4,7 +4,11 @@ import type { Appointment } from "../types";
 import { useAppContext } from "../context/app.context";
 import { sortAppointments } from "../logic/app.logic";
 
-function AppointmentCards(): JSX.Element {
+interface AppointmentCardsProps {
+  user: "doctor" | "patient";
+}
+
+function AppointmentCards({ user }: AppointmentCardsProps): JSX.Element {
   const { state } = useAppContext();
 
   let appointments: Appointment[] = state.appointments;
@@ -15,17 +19,17 @@ function AppointmentCards(): JSX.Element {
   }
 
   return (
-    <div
-      id="appointment-cards"
-      className="flex flex-wrap gap-20 max-w-[100%] flex-row justify-between max-h-[80vh] overflow-y-auto"
-    >
-      {appointments.map((app) => (
-        <Card
-          key={app.id}
-          app={app}
-          isEditing={app.id === state.editingAppointmentId}
-        />
-      ))}
+    <div className=" w-full max-w-7xl mx-auto p-2 md:p-6 bg-white rounded-[10px] max-h-[110vh] overflow-y-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {appointments.map((app) => (
+          <Card
+            key={app.id}
+            app={app}
+            isEditing={app.id === state.editingAppointmentId}
+            readonly={user === "doctor" ? true : false}
+          />
+        ))}
+      </div>
     </div>
   );
 }

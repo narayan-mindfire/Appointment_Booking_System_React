@@ -46,7 +46,7 @@ const ProfileDetails: React.FC<{ user: User }> = ({ user }) => {
 
           <div>
             <h2 className="text-lg font-semibold mb-1">Date of Birth</h2>
-            <p>{user.date_of_birth}</p>
+            <p>{user.date_of_birth?.split("T")[0]}</p>
           </div>
         </>
       )}

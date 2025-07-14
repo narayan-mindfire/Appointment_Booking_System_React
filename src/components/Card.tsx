@@ -64,7 +64,7 @@ const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
             />
             <Button
               variant="danger"
-              children={"Delete"}
+              children={"cancel"}
               onClick={() => deleteAppointment(app.id)}
               className="w-full"
             />

@@ -97,7 +97,7 @@ const AppointmentModal: React.FC<Props> = ({
       } else {
         await axiosInstance.post("/appointments", {
           ...form,
-          doctor_id: form.doctor_id, // if in create mode only
+          doctor_id: form.doctor_id,
         });
       }
       onSuccess();

@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInterceptor";
-import Card from "../../components/Card";
 import Button from "../../components/Button";
 import { logout } from "../../api/logoutUser";
 import AppointmentModal from "../../components/appointment/AppointmentModal";
 import { useAppContext } from "../../context/app.context";
+import AppointmentList from "../../components/AppointmentList";
 
 const PatientDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { state, setState } = useAppContext();
-  const appointments = state.appointments;
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -42,8 +41,8 @@ const PatientDashboard = () => {
         </div>
       </div>
 
-      <div className="flex justify-between">
-        <h2 className="text-2xl font-semibold mb-6">Your Appointments</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Your Appointments</h2>
         <Button
           onClick={() => setShowModal(true)}
           variant="default"
@@ -55,15 +54,13 @@ const PatientDashboard = () => {
 
       {loading ? (
         <p className="text-gray-600">Loading appointments...</p>
-      ) : appointments.length === 0 ? (
+      ) : state.appointments.length === 0 ? (
         <p className="text-gray-600">No appointments found.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-          {appointments.map((appt) => (
-            <Card key={appt.id} app={appt} readonly={false} />
-          ))}
-        </div>
+        <AppointmentList user="patient" />
       )}
+
+      {/* Modal */}
       {showModal && (
         <AppointmentModal
           onClose={() => setShowModal(false)}
