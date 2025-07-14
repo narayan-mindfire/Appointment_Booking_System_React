@@ -4,7 +4,7 @@ import axiosInstance from "../../api/axiosInterceptor";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
-import { slots } from "../../const/const";
+import { slots, type Slot } from "../../const/const";
 
 type Props = {
   onClose: () => void;
@@ -41,6 +41,7 @@ const AppointmentModal: React.FC<Props> = ({
   });
   const [errors, setErrors] = useState<{ [K in keyof FormState]?: string }>({});
   const [apiError, setApiError] = useState("");
+  const [bookedSlots, setBookedSlots] = useState<Slot[]>([]);
 
   useEffect(() => {
     axiosInstance
@@ -57,6 +58,25 @@ const AppointmentModal: React.FC<Props> = ({
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      if (!form.doctor_id || !form.slot_date) return;
+      try {
+        const res = await axiosInstance.get("/slots/doctor", {
+          params: {
+            doctor_id: form.doctor_id,
+            slot_date: form.slot_date,
+          },
+        });
+        setBookedSlots(res.data);
+      } catch (err) {
+        console.error("Failed to fetch booked slots", err);
+      }
+    };
+
+    fetchBookedSlots();
+  }, [form.doctor_id, form.slot_date]);
 
   const validate = () => {
     const tempErrors: { [K in keyof FormState]?: string } = {};
@@ -99,12 +119,10 @@ const AppointmentModal: React.FC<Props> = ({
             Doctor
           </label>
           {initialData ? (
-            // Read-only text for edit mode
             <div className="w-full border rounded-md p-2 bg-gray-100">
               {initialData.doctor}
             </div>
           ) : (
-            // Select dropdown for create mode
             <select
               id="doctor_id"
               name="doctor_id"
@@ -148,11 +166,17 @@ const AppointmentModal: React.FC<Props> = ({
           >
             <option value="">Select Time</option>
             {slots.map((time) => (
-              <option key={time} value={time}>
-                {time}
+              <option
+                key={time}
+                value={time}
+                disabled={bookedSlots.includes(time)}
+                className={bookedSlots.includes(time) ? "text-gray-400" : ""}
+              >
+                {time} {bookedSlots.includes(time) ? "(Booked)" : ""}
               </option>
             ))}
           </select>
+
           {errors.slot_time && (
             <p className="text-red-500 text-xs mt-1">{errors.slot_time}</p>
           )}
@@ -180,5 +204,4 @@ const AppointmentModal: React.FC<Props> = ({
     </Modal>
   );
 };
-
 export default AppointmentModal;
