@@ -2,13 +2,10 @@ import { useEffect } from "react";
 import AppointmentCards from "./AppointmentCards";
 import Table from "./Table";
 import { useAppContext } from "../context/app.context";
-interface AppointmetnListProps {
-  user: "doctor" | "patient";
-}
 
-const AppointmentList: React.FC<AppointmetnListProps> = ({ user }) => {
+const AppointmentList = () => {
   const { state, setState } = useAppContext();
-
+  const user = state.userType;
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sortValue = e.target.value;
     setState("sortAppointmentsBy", sortValue || null);
@@ -73,9 +70,9 @@ const AppointmentList: React.FC<AppointmetnListProps> = ({ user }) => {
           {user === "patient" && `Please create one to get started.`}
         </div>
       ) : state.isGridSelected ? (
-        <AppointmentCards user={user} />
+        <AppointmentCards />
       ) : (
-        <Table user={user} />
+        <Table />
       )}
     </>
   );

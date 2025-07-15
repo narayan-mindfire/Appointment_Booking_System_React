@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInterceptor";
 import Button from "../../components/Button";
-import { logout } from "../../api/logoutUser";
 import AppointmentModal from "../../components/appointment/AppointmentModal";
 import { useAppContext } from "../../context/app.context";
 import AppointmentList from "../../components/AppointmentList";
+import UserMenu from "../../components/Profile/UserMenu";
 
 const PatientDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
   const { state, setState } = useAppContext();
 
   useEffect(() => {
@@ -32,12 +30,7 @@ const PatientDashboard = () => {
       <div className="flex justify-between items-center mb-8 border-b pb-4">
         <h1 className="text-3xl font-bold">Patient Dashboard</h1>
         <div className="flex gap-3">
-          <Button onClick={() => navigate("/profile")} variant="default">
-            Profile
-          </Button>
-          <Button onClick={logout} variant="outline">
-            Logout
-          </Button>
+          <UserMenu />
         </div>
       </div>
 
@@ -57,7 +50,7 @@ const PatientDashboard = () => {
       ) : state.appointments.length === 0 ? (
         <p className="text-gray-600">No appointments found.</p>
       ) : (
-        <AppointmentList user="patient" />
+        <AppointmentList />
       )}
 
       {/* Modal */}

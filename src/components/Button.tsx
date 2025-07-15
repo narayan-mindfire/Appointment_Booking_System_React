@@ -4,12 +4,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: "default" | "outline" | "danger";
   className?: string;
+  disabled?: boolean;
 }
 
 const Button: FC<ButtonProps> = ({
   children,
   variant = "default",
   className = "",
+  disabled = false,
   ...props
 }) => {
   const baseStyles =

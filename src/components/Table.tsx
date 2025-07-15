@@ -10,7 +10,7 @@ interface TableRowProps {
   isEditing: boolean;
   onDelete: () => void;
   onEdit: () => void;
-  user: "doctor" | "patient";
+  user: "doctor" | "patient" | "admin" | null
 }
 
 const TableRow: React.FC<TableRowProps> = ({
@@ -49,15 +49,11 @@ const TableRow: React.FC<TableRowProps> = ({
   );
 };
 
-interface AppointmentTableProps {
-  user: "doctor" | "patient";
-}
 
-const AppointmentTable: React.FC<AppointmentTableProps> = ({ user }) => {
-  console.log("user: ", user);
+const AppointmentTable = () => {
   const { state } = useAppContext();
   const { modal, deleteAppointment, editAppointment } = useAppointmentActions();
-
+  const user = state.userType;
   let appointments = state.appointments;
   const sortKey = state.sortAppointmentsBy as Exclude<
     keyof Appointment,

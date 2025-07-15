@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Modal from "../../components/Modal";
 import { slots, type Slot } from "../../const/const";
+import { isOld } from "../../logic/app.utils";
 
 type Props = {
   onClose: () => void;
@@ -33,6 +34,9 @@ const AppointmentModal: React.FC<Props> = ({
   initialData,
 }) => {
   const [doctors, setDoctors] = useState<any[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState("");
+
   const [form, setForm] = useState<FormState>({
     slot_date: initialData?.slot_date || "",
     slot_time: initialData?.slot_time || "",
@@ -114,29 +118,53 @@ const AppointmentModal: React.FC<Props> = ({
           {initialData ? "Edit Appointment" : "Book Appointment"}
         </h2>
 
-        <div>
-          <label htmlFor="doctor_id" className="block text-sm font-medium mb-1">
+        <div className="relative">
+          <label
+            htmlFor="doctor_search"
+            className="block text-sm font-medium mb-1"
+          >
             Doctor
           </label>
-          {initialData ? (
-            <div className="w-full border rounded-md p-2 bg-gray-100">
-              {initialData.doctor}
-            </div>
-          ) : (
-            <select
-              id="doctor_id"
-              name="doctor_id"
-              value={form.doctor_id}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">Select Doctor</option>
-              {doctors.map((doc) => (
-                <option key={doc._id} value={doc._id}>
+          <input
+            type="text"
+            id="doctor_search"
+            placeholder="Search doctor by name..."
+            className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={
+              form.doctor_id
+                ? doctors.find((d) => d._id === form.doctor_id)?.first_name +
+                  " " +
+                  doctors.find((d) => d._id === form.doctor_id)?.last_name
+                : searchText
+            }
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              setForm((prev) => ({ ...prev, doctor_id: "" }));
+              const query = e.target.value.toLowerCase();
+              const filtered = doctors.filter((doc) =>
+                `${doc.first_name} ${doc.last_name}`
+                  .toLowerCase()
+                  .includes(query)
+              );
+              setFilteredDoctors(filtered);
+            }}
+          />
+          {filteredDoctors.length > 0 && (
+            <ul className="absolute z-50 w-full bg-white border mt-1 rounded shadow-md max-h-60 overflow-auto">
+              {filteredDoctors.map((doc) => (
+                <li
+                  key={doc._id}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setForm((prev) => ({ ...prev, doctor_id: doc._id }));
+                    setSearchText(`Dr. ${doc.first_name} ${doc.last_name}`);
+                    setFilteredDoctors([]);
+                  }}
+                >
                   Dr. {doc.first_name} {doc.last_name} ({doc.specialization})
-                </option>
+                </li>
               ))}
-            </select>
+            </ul>
           )}
           {errors.doctor_id && (
             <p className="text-red-500 text-xs mt-1">{errors.doctor_id}</p>
@@ -169,7 +197,10 @@ const AppointmentModal: React.FC<Props> = ({
               <option
                 key={time}
                 value={time}
-                disabled={bookedSlots.includes(time)}
+                disabled={
+                  bookedSlots.includes(time) ||
+                  (form.slot_date ? isOld(form.slot_date, time) : true)
+                }
                 className={bookedSlots.includes(time) ? "text-gray-400" : ""}
               >
                 {time} {bookedSlots.includes(time) ? "(Booked)" : ""}

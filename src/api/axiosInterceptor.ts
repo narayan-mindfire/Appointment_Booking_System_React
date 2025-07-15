@@ -1,14 +1,14 @@
 import axios from "axios";
 import { loadData, removeData, saveData } from "../storage/app.storage";
-
 const axiosInstance = axios.create({
+  // baseURL: process.env.VITE_BASE_URL,
   baseURL: "http://localhost:5001/api/v1",
   withCredentials: true, 
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = loadData("accessToken", null);
-  console.log("local storage at: ", token)
+  const token = loadData("token", null);
+  console.log("called")
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -27,18 +27,17 @@ axiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        console.log("Refreshing token...");
         const res = await axiosInstance.post("/auth/refresh-token");
         const newAccessToken = res.data.accessToken;
 
         if (newAccessToken) {
-          console.log("got new token: ", newAccessToken)
-          saveData("accessToken", newAccessToken);
+          console.log("got new access token")
+          saveData("token", newAccessToken);
           return axiosInstance(originalRequest); 
         }
       } catch (refreshError) {
         console.error("Session expired. Please login again.", refreshError);
-        removeData("accessToken")
+        removeData("token")
         window.location.href = "/login";
       }
     }

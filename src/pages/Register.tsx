@@ -3,8 +3,8 @@ import Input from "../components/Input";
 import axiosInstance from "../api/axiosInterceptor";
 import { validationService } from "../services/validation.service";
 import { useNavigate } from "react-router-dom";
-import { saveData } from "../storage/app.storage";
 import Button from "../components/Button";
+import { useAppContext } from "../context/app.context";
 
 type UserType = "doctor" | "patient";
 
@@ -54,6 +54,7 @@ const Register = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const validators = validationService();
+  const {setState} = useAppContext(); 
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -98,8 +99,9 @@ const Register = () => {
 
     try {
       const res = await axiosInstance.post("/auth/register", fields);
-      saveData("token", res.data.token);
-      console.log("Registration Success:", res.data);
+      setState("token", res.data.token);
+      setState("userName", res.data.user_name)
+      setState("userType", res.data.user_type)
       navigate(res.data.user_type === "doctor" ? "/doctor" : "/patient");
     } catch (err) {
       console.error("Registration Failed", err);

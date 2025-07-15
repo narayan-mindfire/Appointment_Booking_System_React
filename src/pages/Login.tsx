@@ -4,27 +4,24 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInterceptor";
 import { AxiosError } from "axios";
 import Button from "../components/Button";
-import { saveData } from "../storage/app.storage";
+import { useAppContext } from "../context/app.context";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const {setState} = useAppContext()
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
       const res = await axiosInstance.post("/auth/login", { email, password });
-      saveData("accessToken", res.data.token);
-      const userType = res.data.user_type;
-      if (userType === "doctor") {
-        navigate("/doctor");
-      } else {
-        navigate("/patient");
-      }
+      setState("token", res.data.token)
+      setState("userType", res.data.user_type)
+      setState("userName", res.data.user_name)
+      navigate(res.data.user_type === "doctor" ? "/doctor" : "/patient");
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       setError(error.response?.data?.message || "Login failed");

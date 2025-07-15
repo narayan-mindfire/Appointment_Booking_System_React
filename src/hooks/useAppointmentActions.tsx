@@ -2,7 +2,6 @@ import { useAppContext } from "../context/app.context";
 import { useState, type JSX } from "react";
 import Modal from "../components/Modal";
 import type { Appointment } from "../types";
-import Button from "../components/Button";
 import axiosInstance from "../api/axiosInterceptor";
 import axios from "axios";
 import AppointmentModal from "../components/appointment/AppointmentModal";
@@ -33,30 +32,19 @@ export function useAppointmentActions() {
     const handleClose = () => setModal(null);
 
     setModal(
-      <Modal title="Delete Appointment" onClose={handleClose}>
-        <p className="text-gray-800 text-base mb-6">
-          Are you sure you want to delete this appointment?
-        </p>
-        <div className="flex justify-end gap-3">
-          <Button
-            variant="default"
-            children={"cancel"}
-            onClick={handleClose}
-            className="w-full"
-          />
-          <Button
-            variant="danger"
-            children={"Confirm"}
-            onClick={handleConfirm}
-            className="w-full"
-          />
-        </div>
-      </Modal>
-    );
+  <Modal
+    title="Delete Appointment"
+    message="Are you sure you want to delete this appointment?"
+    onClose={handleClose}
+    onConfirm={handleConfirm}
+    confirmText="Confirm"
+    cancelText="Cancel"
+  />
+);
+
   }
 
   function editAppointment(appointment: Appointment) {
-    console.log("edit appointment called");
     const handleClose = () => setModal(null);
     const handleSuccess = () => {
       setModal(null);

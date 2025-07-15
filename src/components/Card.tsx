@@ -1,6 +1,8 @@
 import type { Appointment } from "../types";
 import { useAppointmentActions } from "../hooks/useAppointmentActions";
 import Button from "./Button";
+import { useAppContext } from "../context/app.context";
+import { isOld } from "../logic/app.utils";
 
 interface CardProps {
   app: Appointment;
@@ -10,7 +12,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
   const { deleteAppointment, editAppointment, modal } = useAppointmentActions();
-
+  const { state } = useAppContext();
+  const user = state.userType;
   return (
     <>
       <div
@@ -19,17 +22,21 @@ const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
         }`}
       >
         <div className="mb-4">
-          <h3
-            title="patient name"
-            className="text-2xl font-bold text-black mt-0"
-          >
-            {app.name}
-          </h3>
-          <p title="doctor" className="text-15 font-normal text-gray-700 m-0">
-            <span className="font-semibold text-black">
-              <i className="fa-solid fa-stethoscope mr-1"></i> {app.doctor}
-            </span>
-          </p>
+          {(user === "admin" || user === "doctor") && (
+            <h3
+              title="patient name"
+              className="text-2xl font-bold text-black mt-0"
+            >
+              {app.name}
+            </h3>
+          )}
+          {(user === "admin" || user === "patient") && (
+            <p title="doctor" className="text-15 font-normal text-gray-700 m-0">
+              <span className="font-semibold text-black">
+                <i className="fa-solid fa-stethoscope mr-1"></i> {app.doctor}
+              </span>
+            </p>
+          )}
         </div>
 
         <p
@@ -61,12 +68,14 @@ const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
               children={"Edit"}
               onClick={() => editAppointment(app)}
               className="w-full"
+              disabled={isOld(app.date, app.slot)}
             />
             <Button
               variant="danger"
               children={"cancel"}
               onClick={() => deleteAppointment(app.id)}
               className="w-full"
+              disabled={isOld(app.date, app.slot)}
             />
           </div>
         )}

@@ -4,12 +4,9 @@ import type { Appointment } from "../types";
 import { useAppContext } from "../context/app.context";
 import { sortAppointments } from "../logic/app.logic";
 
-interface AppointmentCardsProps {
-  user: "doctor" | "patient";
-}
-
-function AppointmentCards({ user }: AppointmentCardsProps): JSX.Element {
+function AppointmentCards(): JSX.Element {
   const { state } = useAppContext();
+  const user = state.userType;
 
   let appointments: Appointment[] = state.appointments;
   const sortAppointmentsBy = state.sortAppointmentsBy;

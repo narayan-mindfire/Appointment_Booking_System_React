@@ -90,7 +90,7 @@ const ProfileEditModal: React.FC<Props> = ({
               <input
                 name="date_of_birth"
                 type="date"
-                value={form.date_of_birth || ""}
+                value={form.date_of_birth?.split("T")[0] || ""}
                 onChange={onChange}
                 className="border p-2 rounded"
               />
