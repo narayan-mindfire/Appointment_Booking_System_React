@@ -1,18 +1,34 @@
-import Counter from "./components/Counter";
-import ContentBody from "./components/ContentBody";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import DoctorDashboard from "./pages/dashboards/DoctorDashboard";
+import PatientDashboard from "./pages/dashboards/PatientDashboard";
 import "./App.css";
+import Profile from "./pages/Profile";
+import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="app">
-      <h1 className="bg-black text-center text-4xl text-white py-7">
-        Appointment Booking System
-      </h1>
-      <div id="counter-container">
-        <Counter />
+    <Router>
+      <div className="app">
+        <h1 className="bg-black text-center text-4xl text-white py-7">
+          Appointment Booking System
+        </h1>
+
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/doctor" element={<DoctorDashboard />} />
+          <Route path="/patient" element={<PatientDashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
       </div>
-      <ContentBody />
-    </div>
+    </Router>
   );
 }
 

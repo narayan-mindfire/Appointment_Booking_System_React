@@ -34,7 +34,16 @@ const docs = [
 ];
 
 // global variables
-type slot = "10:00"| "11:00"| "12:00"| "1:00"
-const slots : slot[]= ["10:00", "11:00", "12:00", "1:00"];
+export type Slot = "10:00" | "11:00" | "12:00" | "14:00" | "15:00" | "16:00" | "17:00";
+
+export const slots: Slot[] = [
+  "10:00",
+  "11:00",
+  "12:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
 
 export { validationConfig, docs, slots as allSlots };
