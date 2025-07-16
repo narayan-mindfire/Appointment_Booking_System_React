@@ -54,7 +54,7 @@ const Register = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const validators = validationService();
-  const {setState} = useAppContext(); 
+  const { setState } = useAppContext();
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -100,8 +100,8 @@ const Register = () => {
     try {
       const res = await axiosInstance.post("/auth/register", fields);
       setState("token", res.data.token);
-      setState("userName", res.data.user_name)
-      setState("userType", res.data.user_type)
+      setState("userName", res.data.user_name);
+      setState("userType", res.data.user_type);
       navigate(res.data.user_type === "doctor" ? "/doctor" : "/patient");
     } catch (err) {
       console.error("Registration Failed", err);
@@ -208,13 +208,31 @@ const Register = () => {
 
           {fields.user_type === "patient" && (
             <>
-              <Input
+              {/* <Input
                 label="Gender"
                 name="gender"
                 value={fields.gender!}
                 onChange={handleChange}
                 error={errors.gender}
-              />
+              /> */}
+
+              <div className="col-span-1 md:col-span-2">
+                <label className="block text-sm font-medium mb-1">Gender</label>
+                <select
+                  name="gender"
+                  value={fields.gender!}
+                  onChange={handleChange}
+                  className="w-full border rounded-md p-2"
+                >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                  <option value="others">others</option>
+                </select>
+                {errors.gender && (
+                  <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+                )}
+              </div>
+
               <Input
                 label="Date of Birth"
                 name="date_of_birth"

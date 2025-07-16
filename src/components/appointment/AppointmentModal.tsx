@@ -131,7 +131,9 @@ const AppointmentModal: React.FC<Props> = ({
             placeholder="Search doctor by name..."
             className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={
-              form.doctor_id
+              initialData
+                ? initialData.doctor
+                : form.doctor_id
                 ? doctors.find((d) => d._id === form.doctor_id)?.first_name +
                   " " +
                   doctors.find((d) => d._id === form.doctor_id)?.last_name

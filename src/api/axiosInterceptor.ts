@@ -3,12 +3,12 @@ import { loadData, removeData, saveData } from "../storage/app.storage";
 const axiosInstance = axios.create({
   // baseURL: process.env.VITE_BASE_URL,
   baseURL: "http://localhost:5001/api/v1",
-  withCredentials: true, 
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config) => {
   const token = loadData("token", null);
-  console.log("called")
+  console.log("called");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -31,13 +31,13 @@ axiosInstance.interceptors.response.use(
         const newAccessToken = res.data.accessToken;
 
         if (newAccessToken) {
-          console.log("got new access token")
+          console.log("got new access token");
           saveData("token", newAccessToken);
-          return axiosInstance(originalRequest); 
+          return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
         console.error("Session expired. Please login again.", refreshError);
-        removeData("token")
+        removeData("token");
         window.location.href = "/login";
       }
     }
@@ -45,6 +45,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 export default axiosInstance;
