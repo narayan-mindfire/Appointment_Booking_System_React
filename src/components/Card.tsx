@@ -1,33 +1,42 @@
 import type { Appointment } from "../types";
 import { useAppointmentActions } from "../hooks/useAppointmentActions";
+import Button from "./Button";
+import { useAppContext } from "../context/app.context";
+import { isOld } from "../logic/app.utils";
 
 interface CardProps {
   app: Appointment;
-  isEditing: boolean;
+  isEditing?: boolean;
+  readonly: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ app, isEditing }) => {
+const Card: React.FC<CardProps> = ({ app, isEditing, readonly }) => {
   const { deleteAppointment, editAppointment, modal } = useAppointmentActions();
-
+  const { state } = useAppContext();
+  const user = state.userType;
   return (
     <>
       <div
-        className={`flex shadow-xl flex-col w-full sm:w-1/2 md:w-8/20 lg:w-2/5 p-5 rounded-[10px] border border-gray-300 ${
+        className={`flex shadow-xl flex-col w-full max-w-md mx-auto p-5 rounded-[10px] border border-gray-300 ${
           isEditing ? "bg-gray-200 border-black border-2" : "hover:bg-gray-100"
         }`}
       >
         <div className="mb-4">
-          <h3
-            title="patient name"
-            className="text-2xl font-bold text-black mt-0"
-          >
-            {app.name}
-          </h3>
-          <p title="doctor" className="text-15 font-normal text-gray-700 m-0">
-            <span className="font-semibold text-black">
-              <i className="fa-solid fa-stethoscope mr-1"></i> {app.doctor}
-            </span>
-          </p>
+          {(user === "admin" || user === "doctor") && (
+            <h3
+              title="patient name"
+              className="text-2xl font-bold text-black mt-0"
+            >
+              {app.name}
+            </h3>
+          )}
+          {(user === "admin" || user === "patient") && (
+            <p title="doctor" className="text-15 font-normal text-gray-700 m-0">
+              <span className="font-semibold text-black">
+                <i className="fa-solid fa-stethoscope mr-1"></i> {app.doctor}
+              </span>
+            </p>
+          )}
         </div>
 
         <p
@@ -52,20 +61,24 @@ const Card: React.FC<CardProps> = ({ app, isEditing }) => {
           </div>
         </div>
 
-        <div className="flex justify-evenly gap-2 mt-4 pt-4">
-          <button
-            className="flex-1 px-3 py-2 text-15px font-medium rounded-md bg-black text-white border border-black hover:bg-gray-800"
-            onClick={() => editAppointment(app)}
-          >
-            Edit
-          </button>
-          <button
-            className="flex-1 px-3 py-2 text-15 font-medium rounded-md bg-white text-black border border-gray-400 hover:bg-red-400 hover:border-gray-600"
-            onClick={() => deleteAppointment(app.id)}
-          >
-            Delete
-          </button>
-        </div>
+        {!readonly && (
+          <div className="flex justify-evenly gap-2 mt-4 pt-4">
+            <Button
+              variant="default"
+              children={"Edit"}
+              onClick={() => editAppointment(app)}
+              className="w-full"
+              disabled={isOld(app.date, app.slot)}
+            />
+            <Button
+              variant="danger"
+              children={"cancel"}
+              onClick={() => deleteAppointment(app.id)}
+              className="w-full"
+              disabled={isOld(app.date, app.slot)}
+            />
+          </div>
+        )}
       </div>
 
       {modal}

@@ -11,9 +11,12 @@ import type { State } from "../types";
 const defaultState: State = {
   appointments: loadData("appointments", []),
   isGridSelected: loadData("isGridSelected", true),
-  editingAppointmentId: loadData("editingAppointmentId", null),
+  editingAppointmentId: null,
   sortAppointmentsBy: null,
   formFields: null,
+  userType : loadData("userType", null),
+  token: loadData("token", null),
+  userName: loadData("userName", null)
 };
 
 interface AppContextType {

@@ -1,32 +1,55 @@
 import React from "react";
+import Button from "./Button";
 
 interface ModalProps {
-  message: string;
-  onConfirm: () => void;
+  title?: string;
   onClose: () => void;
+  children?: React.ReactNode;
+  message?: string;
+  onConfirm?: () => void;
+  confirmText?: string;
+  cancelText?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ message, onConfirm, onClose }) => {
+const Modal: React.FC<ModalProps> = ({
+  title,
+  onClose,
+  children,
+  message,
+  onConfirm,
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+}) => {
+  const isConfirmation = !!message && !!onConfirm;
+
   return (
-    <div
-      id="myModal"
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div className="relative w-[90%] max-w-md bg-white p-6 rounded-lg text-center shadow-lg">
-        <span
-          className="absolute top-3 right-4 text-2xl font-bold cursor-pointer select-none"
-          onClick={onClose}
-        >
-          <i className="fa-solid fa-xmark"></i>
-        </span>
-        <p className="text-gray-800 text-base my-5">{message}</p>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
+      <div className="relative w-[90%] max-w-lg bg-white p-6 rounded-lg shadow-lg max-h-[95vh] overflow-y-auto">
         <button
-          id="confirm-button"
-          onClick={onConfirm}
-          className="bg-red-600 hover:bg-black text-white font-medium px-5 py-2 rounded-md text-sm transition-colors"
+          className="absolute top-3 right-4 text-xl font-bold text-gray-600 hover:text-black"
+          onClick={onClose}
+          aria-label="Close modal"
         >
-          Confirm
+          &times;
         </button>
+
+        {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
+
+        {isConfirmation ? (
+          <>
+            <p className="text-gray-800 text-base mb-6">{message}</p>
+            <div className="flex justify-end gap-3">
+              <Button variant="default" onClick={onClose} className="w-full">
+                {cancelText}
+              </Button>
+              <Button variant="danger" onClick={onConfirm} className="w-full">
+                {confirmText}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div>{children}</div>
+        )}
       </div>
     </div>
   );
